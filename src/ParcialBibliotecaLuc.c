@@ -44,7 +44,7 @@ char path[200];
 		case 1:
 			if(flagLibrosCargados == 0 || ll_isEmpty(listaLibros))
 			{
-				getStringPath(path,200,3,"\nIngrese el nombre del archivo a cargar: ","Error, intente nuevamente");
+				getStringPath(path,200,3,"Ingrese el nombre del archivo a cargar: (data_libros) \n","Error, intente nuevamente");
 
 				if(controller_loadFromText(path,listaLibros)==1)
 				{
@@ -52,7 +52,7 @@ char path[200];
 				}
 				else
 				{
-					puts("\nNo se encontro el nombre del archivo datalibros \n");
+					puts("No se encontro el nombre del archivo! data_libros \n");
 				}
 			}else{
 
@@ -94,7 +94,7 @@ char path[200];
 		break;
 
 		case 4:
-
+			//MOSTRAR
 			//if(flagLibrosCargados == 1 && flagEditorialesCargados == 1)
 			if(!ll_isEmpty(listaLibros))
 			{

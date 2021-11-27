@@ -1,30 +1,5 @@
 #include "Libros.h"
 
-eLibro* libro_new(void)
-{
-	eLibro* pLibro = NULL;
-	int id;
-	char titulo[128];
-	char autor[128];
-	float precio;
-	int editorialId;
-
-	id=0;
-	strcpy(titulo,"\0");
-	strcpy(autor,"\0");
-	precio=0;
-	editorialId=0;
-
-	pLibro = (eLibro*) malloc(sizeof(eLibro));
-
-	if(pLibro!=NULL)
-	{
-		libro_setVerifyInt(pLibro,id,titulo,autor,precio,editorialId);
-	}
-
-	return pLibro;
-}
-
 eLibro* libro_newParametros(char* idStr, char* tituloStr, char* autorStr, char* precioStr, char* editorialIdStr)
 {
 	eLibro* pLibroParam = NULL;
@@ -44,6 +19,35 @@ eLibro* libro_newParametros(char* idStr, char* tituloStr, char* autorStr, char* 
 
 	return pLibroParam;
 }
+
+eLibro* libro_new(void)
+{
+	eLibro* pLibro = NULL;
+
+	int id;
+	char titulo[128];
+	char autor[128];
+	float precio;
+	int editorialId;
+
+	id=0;
+	precio=0;
+	editorialId=0;
+
+	pLibro = (eLibro*) malloc(sizeof(eLibro));
+
+	strcpy(titulo,"\0");
+	strcpy(autor,"\0");
+
+	if(pLibro!=NULL)
+	{
+		libro_setVerifyInt(pLibro,id,titulo,autor,precio,editorialId);
+	}
+
+	return pLibro;
+}
+
+
 
 void libro_delete(eLibro* this)
 {
@@ -332,7 +336,7 @@ int libro_printList(LinkedList* listaLibros)
 		if(len>0)
 		{
 
-			puts("|\tID|\tTITULO\t|\tAUTOR\t| PRECIO ID.EDITORIAL NOMBRE EDITORIAL \n");
+			puts("|ID\t|\tTITULO\t|\t\tAUTOR\t|\tPRECIO |\t\t ID.EDITORIAL \t|\tNOMBRE EDITORIAL \n");
 
 			for(i=0; i<len ;i++)
 			{

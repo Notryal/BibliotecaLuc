@@ -1,0 +1,13 @@
+id,titulo,autor,precio,idEditorial
+1,Harry Potter 1, J.K. Rowling ,2405,1
+2,Metamorfosis,Kafka,1982,5
+3,Harry Potter 3, J.K. Rowling ,3405,5
+4,Harry Potter 4, J.K. Rowling ,9405,6
+5,Harry Potter 5, J.K. Rowling ,1005,4
+6,Harry Potter 6, J.K. Rowling ,2405,6
+7,Harry Potter 7, J.K. Rowling ,4005,3
+8,Harry Potter 2, J.K. Rowling ,2425,5
+9,Farenheit,Fox,898,4
+10,El padrino,Mario,2291,4
+11,ASOIAF,George Martin,499,2
+12,El Alquimista,Paulo Cohelo,2687,6
