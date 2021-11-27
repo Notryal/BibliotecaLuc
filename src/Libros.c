@@ -58,29 +58,6 @@ void libro_delete(eLibro* this)
 		this=NULL;
 	}
 }
-//editorial no harcodeo
-/*
-int BuscarIdEditorial(char* nombre, int* id)
-{
-	int isOk = -1;
-	int idAux[6]={1,2,3,4,5,6};
-	char nombreAux[6][25]={"PLANETA","SIGLO XXI EDITORES","PEARSON","MINOTAURO","SALAMANDRA","PENGUIN BOOKS"};
-
-	if(nombre!=NULL && id!=NULL)
-	{
-		for(int i=0;i<6;i++)
-		{
-			if(!stricmp(nombreAux[i],nombre))
-			{
-				*id=idAux[i];
-				isOk=0;
-			}
-		}
-	}
-
-	return isOk;
-}
-*/
 
 int BuscarEditorialId(LinkedList* Editoriales,int id)
 {
@@ -318,13 +295,8 @@ int libro_printOneLibro(eLibro* this)
 		if(!libro_getVerify(this,&auxiliarID,auxiliarTitulo,auxiliarAutor,&auxiliarPrecio,&auxiliarEditorialId))
 		{
 
-
-			BuscarNombreEditorial(auxiliarEditorialId,editorial);
-
-
-
-
-
+			BuscarEditorialId();
+			BuscarEditorialId(auxiliarEditorialId,auxiliarEditorialId);
 
 
 			printf("| %2d |%-50s|%-16s|$%-7.2f|%2d|%-18s|\n",auxiliarID

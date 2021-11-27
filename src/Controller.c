@@ -37,7 +37,6 @@ int controller_saveAsText(char* path , LinkedList* pArrayListLibro)
 				{
 					if(!libro_getVerify(aux,&auxiliarID,auxiliarTitulo,auxiliarAutor,&auxiliarPrecio,&auxiliarEditorialId))
 					{
-						BuscarNombreEditorial(auxiliarEditorialId,auxiliarEditorialNombre);
 						fprintf(pArchivo,"%d,%s,%s,%2.f,%s\n",auxiliarID,auxiliarTitulo,auxiliarAutor,auxiliarPrecio,auxiliarEditorialNombre);
 						isOk=0;
 					}

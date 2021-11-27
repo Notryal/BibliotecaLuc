@@ -5,11 +5,12 @@
 int parser_libroFromText(FILE* pFile , LinkedList* pArrayListLibro)
 {
 	int isOk = -1;
+
 	char id[128];
 	char titulo[128];
 	char autor[128];
 	char precio[128];
-	int idEditorial;
+	char idEditorial[128];
 
 	eLibro* auxiliar = NULL;
 
