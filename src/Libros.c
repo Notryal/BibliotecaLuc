@@ -59,6 +59,7 @@ void libro_delete(eLibro* this)
 	}
 }
 //editorial no harcodeo
+/*
 int BuscarIdEditorial(char* nombre, int* id)
 {
 	int isOk = -1;
@@ -79,27 +80,26 @@ int BuscarIdEditorial(char* nombre, int* id)
 
 	return isOk;
 }
+*/
 
 int BuscarEditorialId(LinkedList* Editoriales,int id)
 {
-		int index;
-		int i;
-		int len;
-		int auxIdEdit;
-		eEditorial* auxEditorial;
+	int index;
+	int i;
+	int auxIdEdit;
+	eEditorial* auxEditorial;
 
-		index= -1;
+	index= -1;
 
-		if(Editoriales != NULL && ll_len(Editoriales)>0)
+	if(Editoriales != NULL && ll_len(Editoriales)>0)
+	{
+		for(i=0 ; i<ll_len(Editoriales) ; i++)
 		{
-			for(i=0 ; i<ll_len(Editoriales) ; i++)
-			{
-				auxEditorial= (eEditorial*)ll_get(Editoriales, i);
+			auxEditorial= (eEditorial*)ll_get(Editoriales, i);
 
-				if(auxEditorial != NULL && auxIdEdit != NULL && auxIdEdit>0)
-				{
-					auxIdEdit= auxEditorial->idEditorial;
-				}
+			if(auxEditorial != NULL)
+			{
+				auxIdEdit= auxEditorial->idEditorial;
 
 				if(auxEditorial!= NULL && auxIdEdit==id)
 				{
@@ -108,6 +108,7 @@ int BuscarEditorialId(LinkedList* Editoriales,int id)
 				}
 			}
 		}
+	}
 
 	return index;
 }

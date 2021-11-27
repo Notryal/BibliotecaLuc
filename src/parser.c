@@ -9,8 +9,6 @@ int parser_libroFromText(FILE* pFile , LinkedList* pArrayListLibro)
 	char titulo[128];
 	char autor[128];
 	char precio[128];
-	char editorial[128];
-
 	int idEditorial;
 
 	eLibro* auxiliar = NULL;
@@ -19,12 +17,8 @@ int parser_libroFromText(FILE* pFile , LinkedList* pArrayListLibro)
 	{
 		do
 		{
-			if(fscanf(pFile,"%[^,] , %[^,] , %[^,] , %[^,] , %[^\n]\n",id,titulo,autor,precio,editorial)==5)
+			if(fscanf(pFile,"%[^,] , %[^,] , %[^,] , %[^,] , %[^\n]\n",id,titulo,autor,precio,idEditorial)==5)
 			{
-
-				BuscarIdEditorial(editorial,&idEditorial);
-				itoa(idEditorial,editorial,128);
-
 				auxiliar = libro_newParametros(id,titulo,autor,precio,idEditorial);
 
 				if(auxiliar!=NULL)
