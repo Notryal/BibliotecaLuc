@@ -50,7 +50,7 @@ int BuscarIdEditorial(char* nombre, int* id);
  * @param nombre
  * @return 0 si esta todo bien, -1 si esta todo mal
  */
-int BuscarNombreEditorial(int id, char* nombre);
+int BuscarEditorialId(LinkedList* Editoriales,int id);
 
 //SETTERS
 /**

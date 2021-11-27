@@ -1,4 +1,5 @@
 #include "Libros.h"
+#include "Editoriales.h"
 
 eLibro* libro_newParametros(char* idStr, char* tituloStr, char* autorStr, char* precioStr, char* editorialIdStr)
 {
@@ -79,25 +80,36 @@ int BuscarIdEditorial(char* nombre, int* id)
 	return isOk;
 }
 
-int BuscarNombreEditorial(int id, char* nombre)
+int BuscarEditorialId(LinkedList* Editoriales,int id)
 {
-	int isOk = -1;
-	int idAux[6]={1,2,3,4,5,6};
-	char nombreAux[6][25]={"PLANETA","SIGLO XXI EDITORES","PEARSON","MINOTAURO","SALAMANDRA","PENGUIN BOOKS"};
+		int index;
+		int i;
+		int len;
+		int auxIdEdit;
+		eEditorial* auxEditorial;
 
-	if(nombre!=NULL && id>0)
-	{
-		for(int i=0;i<6;i++)
+		index= -1;
+
+		if(Editoriales != NULL && ll_len(Editoriales)>0)
 		{
-			if(idAux[i]==id)
+			for(i=0 ; i<ll_len(Editoriales) ; i++)
 			{
-				strcpy(nombre,nombreAux[i]);
-				isOk=0;
+				auxEditorial= (eEditorial*)ll_get(Editoriales, i);
+
+				if(auxEditorial != NULL && auxIdEdit != NULL && auxIdEdit>0)
+				{
+					auxIdEdit= auxEditorial->idEditorial;
+				}
+
+				if(auxEditorial!= NULL && auxIdEdit==id)
+				{
+					index = i;
+					break;
+				}
 			}
 		}
-	}
 
-	return isOk;
+	return index;
 }
 
 //---------------------------------------------SETTERS---------------------------------------------
@@ -304,8 +316,17 @@ int libro_printOneLibro(eLibro* this)
 	{
 		if(!libro_getVerify(this,&auxiliarID,auxiliarTitulo,auxiliarAutor,&auxiliarPrecio,&auxiliarEditorialId))
 		{
+
+
 			BuscarNombreEditorial(auxiliarEditorialId,editorial);
-			printf("| %2d |%-50s|%-16s|$%-7.2f|     %2d     |%-18s|\n",auxiliarID
+
+
+
+
+
+
+
+			printf("| %2d |%-50s|%-16s|$%-7.2f|%2d|%-18s|\n",auxiliarID
 												 	 	 	 	 	  ,auxiliarTitulo
 																	  ,auxiliarAutor
 																	  ,auxiliarPrecio
