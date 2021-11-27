@@ -701,7 +701,7 @@ LinkedList* ll_map(LinkedList* this, void* (pFunc)(void*))
 
     if(this != NULL && pFunc != NULL){
 
-    	for(int i=0;i< sizeof(this);i++){
+    	for(int i=0;i< ll_len(this);i++){
 
             pElement = ll_get(this, i);
             pElement = pFunc(pElement);//le paso elementos a la funcion

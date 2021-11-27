@@ -33,7 +33,6 @@ int flagLibrosCargados = 0;
 //int flagEditorialesCargados = 0;
 
 int opciones;
-
 char path[200];
 
 	do
@@ -43,7 +42,7 @@ char path[200];
 		switch(opciones)
 		{
 		case 1:
-			if(flagLibrosCargados == 0 && ll_isEmpty(listaLibros))
+			if(flagLibrosCargados == 0 || ll_isEmpty(listaLibros))
 			{
 				getStringPath(path,200,3,"\nIngrese el nombre del archivo a cargar: ","Error, intente nuevamente");
 
@@ -82,8 +81,6 @@ char path[200];
 			break;
 		break;
 		case 3:
-//Ordenar la lista generada en el ítem anterior, con la función ll_sort, según el criterio de
-//ordenamiento “Autor” de manera ascendente.
 
 			//if(flagLibrosCargados == 1 && flagEditorialesCargados == 1)
 			if(!ll_isEmpty(listaLibros))
@@ -97,8 +94,6 @@ char path[200];
 		break;
 
 		case 4:
-//Imprimir por pantalla todos los datos de los libros.
-//ACLARACIÓN: Se deberá imprimir la descripción de la editorial.
 
 			//if(flagLibrosCargados == 1 && flagEditorialesCargados == 1)
 			if(!ll_isEmpty(listaLibros))
@@ -112,8 +107,6 @@ char path[200];
 		break;
 
 		case 5:
-//5. Realizar un listado de los libros de la editorial MINOTAURO. Para ello deberá utilizar la
-//función ll_filter* del LinkedList. Guardar el listado en un archivo csv.
 
 			//if(flagLibrosCargados == 1 && flagEditorialesCargados == 1)
 			if(!ll_isEmpty(listaLibros))

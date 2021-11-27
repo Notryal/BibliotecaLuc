@@ -1,6 +1,5 @@
 #include "Libros.h"
 
-
 eLibro* libro_new(void)
 {
 	eLibro* pLibro = NULL;
@@ -54,7 +53,7 @@ void libro_delete(eLibro* this)
 		this=NULL;
 	}
 }
-
+//editorial no harcodeo
 int BuscarIdEditorial(char* nombre, int* id)
 {
 	int isOk = -1;
