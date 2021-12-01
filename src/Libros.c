@@ -420,7 +420,7 @@ int librosFiltrarPearson(void* unLibro)
 	eLibro* auxiliarLibro;
 	int idEditorial;
 	float precioLibro;
-	float acumulador=0;
+	int acumulador=0;
 
 	isOk = 0;
 
