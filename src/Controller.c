@@ -2,11 +2,11 @@
 
 int Controller_FilterEditorial(char* path , LinkedList* pArrayList, LinkedList* pArrayListEditorial)
 {
-	int retorno;
+	int rtn;
 	FILE* miArchivo;
 	LinkedList* nuevaLista;
 
-	retorno = 1;
+	rtn = 1;
 
 	if(path != NULL && pArrayList != NULL)
 	{
@@ -17,7 +17,7 @@ int Controller_FilterEditorial(char* path , LinkedList* pArrayList, LinkedList* 
 			if(Parser_SaveAsText(miArchivo, nuevaLista) == 0)
 			{
 				controller_ListLibros(nuevaLista, pArrayListEditorial);
-				retorno = 0;
+				rtn = 0;
 			}
 			else
 			{
@@ -27,34 +27,8 @@ int Controller_FilterEditorial(char* path , LinkedList* pArrayList, LinkedList* 
 		}
 	}
 
-	return retorno;
+	return rtn;
 }
-
-
-int librosFiltrarMinotauro(void* unLibro)
-{
-	int retorno;
-	eLibro* auxiliarLibro;
-	int idEditorial;
-
-	retorno = 0;
-
-	if(unLibro != NULL)
-	{
-		auxiliarLibro = (eLibro*)unLibro;
-
-		if(!libro_getEditorialId(auxiliarLibro, &idEditorial))
-		{
-			if(idEditorial == 4)
-			{
-				retorno = 1;
-			}
-		}
-	}
-
-	return retorno;
-}
-
 
 
 
@@ -181,6 +155,62 @@ int Controller_Mapeado(char* path , LinkedList* pArrayList, LinkedList* pArrayLi
 
 
 //******************************************************
+
+int Controller_Contador(char* path ,LinkedList* pArrayList, LinkedList* pArrayListEditorial){
+	int isOk;
+	FILE* miArchivo;
+	int contador;
+
+	isOk = -1;
+
+	if(path != NULL && pArrayList != NULL)
+	{
+		miArchivo = fopen(path, "r");
+
+		contador = ll_count(pArrayList, libros_Contados);
+
+		printf("La cantidad de libros con precio mayor a 500 es %d ",contador);
+
+	}
+	fclose(miArchivo);
+
+	return isOk;
+}
+
+int Controller_Acumulador(char* path ,LinkedList* pArrayList, LinkedList* pArrayListEditorial){
+	int rtn;
+	FILE* miArchivo;
+	int contador;
+
+	rtn = 1;
+
+	if(path != NULL && pArrayList != NULL)
+	{
+		miArchivo = fopen(path, "r");
+		contador = ll_count(pArrayList, librosFiltrarPearson);
+
+		//contador = ll_filter(pArrayList, librosFiltrarPearson);
+
+		printf("%d", contador);
+
+
+
+	}
+
+	fclose(miArchivo);
+	return rtn;
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 

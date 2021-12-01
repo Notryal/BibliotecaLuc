@@ -668,15 +668,15 @@ cada iteración. Al finalizar las iteraciones, la función “ll_count” devolv
 
 int ll_count(LinkedList* this, int (*fn)(void* element))
 {
-	int returnAux = -1;
+
 	int acumulador = 0;
 	int i;
 	int len = ll_len(this);
 
 	if(this != NULL && fn != NULL){
-		returnAux = 0;
+
 		if(ll_isEmpty(this) == 0){
-			returnAux = 1;
+
 			void* pElement;
 			for(i=0;i<len;i++){
 				pElement = ll_get(this,i);
@@ -686,7 +686,7 @@ int ll_count(LinkedList* this, int (*fn)(void* element))
 			}
 		}
 	} else {
-		return returnAux;
+		return acumulador;
 	}
 
 	return acumulador;

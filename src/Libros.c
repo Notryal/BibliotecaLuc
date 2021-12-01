@@ -270,7 +270,29 @@ int libro_getVerify(eLibro* this, int* id, char* titulo, char* autor, float* pre
 	return isOk;
 }
 //-----------------------------------------------------------
+int librosFiltrarMinotauro(void* unLibro)
+{
+	int isOk;
+	eLibro* auxiliarLibro;
+	int idEditorial;
 
+	isOk = 0;
+
+	if(unLibro != NULL)
+	{
+		auxiliarLibro = (eLibro*)unLibro;
+
+		if(!libro_getEditorialId(auxiliarLibro, &idEditorial))
+		{
+			if(idEditorial == 4)
+			{
+				isOk = 1;
+			}
+		}
+	}
+
+	return isOk;
+}
 
 
 
@@ -365,5 +387,76 @@ void* libros_Mapeado(void* unLibro)
 
 	return retorno;
 }
+
+int libros_Contados(void* unLibro){
+	int isOk;
+	eLibro* auxiliarLibro;
+	float precio;
+
+	isOk = 0;
+
+	if(unLibro != NULL)
+	{
+		auxiliarLibro = (eLibro*)unLibro;
+
+		if(!libro_getPrecio(auxiliarLibro, &precio))
+		{
+			if(precio > 500)
+			{
+				isOk = 1;
+				puts("libro +");
+
+			}
+		}
+	}
+
+	return isOk;
+}
+
+
+int librosFiltrarPearson(void* unLibro)
+{
+	int isOk;
+	eLibro* auxiliarLibro;
+	int idEditorial;
+	float precioLibro;
+	float acumulador=0;
+
+	isOk = 0;
+
+	if(unLibro != NULL)
+	{
+		auxiliarLibro = (eLibro*)unLibro;
+
+		if(!libro_getEditorialId(auxiliarLibro, &idEditorial))
+		{
+			if(idEditorial == 3 && !libro_getPrecio(auxiliarLibro, &precioLibro))
+			{
+				acumulador += precioLibro;
+				puts("Acumule un libro pearson");
+				isOk = 1;
+			}
+		}
+
+		printf("el acumulador es : %f", acumulador);
+	}
+
+
+
+	return isOk;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

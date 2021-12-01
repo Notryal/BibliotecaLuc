@@ -185,5 +185,32 @@ int libro_CompararAutor(void* autorUno, void* autorDos);
  * @param libro2
  * @return -1 si es menor, 0 si son iguales, 1 si es mayor
  */
+int librosFiltrarMinotauro(void* unLibro);
+/**
+ * @brief Compara los nombres de los autores buscando ordenar de mayor a menor
+ *
+ * @param libro1
+ * @param libro2
+ * @return -1 si es menor, 0 si son iguales, 1 si es mayor
+ */
+int librosFiltrarPearson(void* unLibro);
+/**
+ * @brief Compara los nombres de los autores buscando ordenar de mayor a menor
+ *
+ * @param libro1
+ * @param libro2
+ * @return -1 si es menor, 0 si son iguales, 1 si es mayor
+ */
 void* libros_Mapeado(void* unLibro);
+/**
+ * @brief Compara los nombres de los autores buscando ordenar de mayor a menor
+ *
+ * @param libro1
+ * @param libro2
+ * @return -1 si es menor, 0 si son iguales, 1 si es mayor
+ */
+int libros_Contados(void* unLibro);
+
+
+
 #endif /* LIBROS_H_ */

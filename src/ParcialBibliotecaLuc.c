@@ -88,6 +88,7 @@ ll_clear(listaEditoriales);
 				controller_ListLibros(listaLibros,listaEditoriales);
 
 				puts("\n*********************************************************************");
+				puts("LISTA ORDENADA");
 				puts("*********************************************************************\n");
 
 				controller_sortLibros(listaLibros);
@@ -126,17 +127,38 @@ ll_clear(listaEditoriales);
 		case 6:
 			if(!ll_isEmpty(listaLibros))
 			{
-				if(Controller_Mapeado("mapeado.csv", listaLibros, listaLibros) == 1)
+				if(!Controller_Mapeado("mapeado.csv", listaLibros, listaLibros))
 				{
-						printf("ERROR");
+					puts("Se realizo el mapeo con exito");
 				}
-				else
-				{
-						printf("FUNCIONO");
-				}
+
 			}
 		break;
 		case 7:
+			//7. Determinar cuántos libros cuestan mas de $500.
+			if(!ll_isEmpty(listaLibros)){
+				if(!Controller_Contador("libros.csv",listaLibros, listaLibros))
+				{
+						puts("Se realizo el mapeo con exito");
+				}
+
+			}else{
+				puts("Error, no se cargaron los libros");
+			}
+		break;
+		case 8:
+			//8. Determinar la sumatoria de precios de los libros de la editorial PEARSON
+			if(!ll_isEmpty(listaLibros)){
+				if(!Controller_Acumulador("libros.csv",listaLibros, listaLibros))
+				{
+						puts("Se realizo el mapeo con exito");
+				}
+
+			}else{
+				puts("Error, no se cargaron los libros");
+			}
+		break;
+		case 9:
 			puts("hasta luego");
 		break;
 		default:
@@ -144,7 +166,7 @@ ll_clear(listaEditoriales);
 		break;
 		}
 
-	}while(opciones != 7);
+	}while(opciones != 9);
 
     ll_deleteLinkedList(listaLibros);
     ll_deleteLinkedList(listaEditoriales);

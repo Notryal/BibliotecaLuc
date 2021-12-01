@@ -15,9 +15,15 @@ int controller_loadEditorialFromText(char* path , LinkedList* pArrayEditoriales)
 
 int controller_loadFromText(char* path , LinkedList* pArrayLibros);
 
-int librosFiltrarMinotauro(void* unLibro);
+
 
 int Controller_FilterEditorial(char* path , LinkedList* pArrayList, LinkedList* pArrayListEditorial);
 
 int Controller_Mapeado(char* path , LinkedList* pArrayList, LinkedList* pArrayListEditorial);
+
+int Controller_Contador(char* path ,LinkedList* pArrayList, LinkedList* pArrayListEditorial);
+int Controller_Acumulador(char* path ,LinkedList* pArrayList, LinkedList* pArrayListEditorial);
+
+
+
 #endif /* CONTROLLER_H_ */
