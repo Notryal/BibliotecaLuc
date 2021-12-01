@@ -1,198 +1,186 @@
-#include "LinkedList.h"
-#include "Libros.h"
-#include "Editoriales.h"
 #include "Controller.h"
-#include "parser.h"
-#include "menus.h"
 
-int controller_saveAsText(char* path , LinkedList* pArrayListLibro)
+int Controller_FilterEditorial(char* path , LinkedList* pArrayList, LinkedList* pArrayListEditorial)
 {
-	int isOk = -1;
-	int i;
-	int len;
-	int auxiliarID;
-	char auxiliarTitulo[128];
-	char auxiliarAutor[128];
-	float auxiliarPrecio;
-	int auxiliarEditorialId;
-	char auxiliarEditorialNombre[128];
-	FILE* pArchivo;
-	eLibro* aux = NULL;
+	int retorno;
+	FILE* miArchivo;
+	LinkedList* nuevaLista;
 
-	if(path!=NULL && pArrayListLibro!=NULL)
+	retorno = 1;
+
+	if(path != NULL && pArrayList != NULL)
 	{
-		pArchivo = fopen(path,"w");
-
-		len = ll_len(pArrayListLibro);
-
-		if(pArchivo!= NULL && len>0)
+		miArchivo = fopen(path, "w");
+		nuevaLista = ll_filter(pArrayList, librosFiltrarMinotauro);
+		if(miArchivo != NULL && nuevaLista != NULL)
 		{
-			fprintf(pArchivo,"id,titulo,autor,precio,editorialId\n");
-
-			for(i=0; i<len ;i++)
+			if(Parser_SaveAsText(miArchivo, nuevaLista) == 0)
 			{
-				aux = (eLibro*) ll_get(pArrayListLibro,i);
-
-				if(aux!=NULL)
-				{
-					if(!libro_getVerify(aux,&auxiliarID,auxiliarTitulo,auxiliarAutor,&auxiliarPrecio,&auxiliarEditorialId))
-					{
-						fprintf(pArchivo,"%d,%s,%s,%2.f,%s\n",auxiliarID,auxiliarTitulo,auxiliarAutor,auxiliarPrecio,auxiliarEditorialNombre);
-						isOk=0;
-					}
-					else
-					{
-						libro_delete(aux);
-						printf("No se pudo guardar el archivo\n");
-					}
-				}
+				controller_ListLibros(nuevaLista, pArrayListEditorial);
+				retorno = 0;
 			}
+			else
+			{
+				printf("\nError parser");
+			}
+			fclose(miArchivo);
 		}
-		else
-		{
-			printf("Error al abrir el archivo\n");
-		}
-		fclose(pArchivo);
 	}
 
-	if(!isOk)
-	{
-		printf("El archivo fue guardado con exito!\n");
-	}
-	return isOk;
+	return retorno;
 }
 
 
-int controller_loadFromText(char* path , LinkedList* pArrayListLibro)
+int librosFiltrarMinotauro(void* unLibro)
+{
+	int retorno;
+	eLibro* auxiliarLibro;
+	int idEditorial;
+
+	retorno = 0;
+
+	if(unLibro != NULL)
+	{
+		auxiliarLibro = (eLibro*)unLibro;
+
+		if(!libro_getEditorialId(auxiliarLibro, &idEditorial))
+		{
+			if(idEditorial == 4)
+			{
+				retorno = 1;
+			}
+		}
+	}
+
+	return retorno;
+}
+
+
+
+
+
+int controller_loadFromText(char* path , LinkedList* pArrayLibros)
 {
 	int isOk = -1;
 	FILE* pArchivo;
 
-	if(path!=NULL && pArrayListLibro!=NULL)
+	if(path!=NULL && pArrayLibros!=NULL)
 	{
 		pArchivo = fopen(path,"r");
 
 		if(pArchivo!= NULL)
 		{
-			if(!parser_libroFromText(pArchivo, pArrayListLibro))
+			if(!parser_libroFromText(pArchivo, pArrayLibros))
 			{
-				puts("Se cargo con exito\n");
 				isOk=0;
 			}
 		}
-		else
-		{
-			puts("Error al abrir el archivo\n");
-		}
-
 		fclose(pArchivo);
 	}
 
     return isOk;
 }
 
-int controller_sortLibro(LinkedList* pArrayListLibro)
-{
-	int isOk = -1;
-	char confirmar[4];
-	strcpy(confirmar,"no");
-	LinkedList* clon = NULL;
-	int opcion;
-	opcion = libroMenu();
+int controller_loadEditorialFromText(char* path , LinkedList* pArrayEditoriales){
 
-	if(pArrayListLibro!=NULL)
-	{
-		clon = ll_clone(pArrayListLibro);
-
-		if(clon!=NULL)
-		{
-			do
-			{
-				switch(opcion)
-				{
-					case 0:
-						utn_getString(confirmar,4,3,"\n¿Esta seguro que desea salir?[si/no]\n","\nRespuesta invalida, si o no\n");
-
-						if(stricmp(confirmar,"no"))
-						{
-							ll_deleteLinkedList(clon);
-						}
-						break;
-					case 1:
-						if(!ll_sort(clon,libro_compareByAutor,1))
-						{
-							printf("Se ha ordenado la lista por autor de manera ascendente");
-						}
-						else
-						{
-							printf("No pudo ordenarse la lista");
-						}
-						break;
-					case 2:
-						controller_listLibro(clon);
-						break;
-				}
-			}while(stricmp(confirmar,"si"));
-		}
-	}
-
-	return isOk;
-}
-
-
-
-int controller_listLibro(LinkedList* pArrayListLibro)
-{
 	int isOk = -1;
 
-	if(pArrayListLibro!=NULL)
+	FILE* pFile = fopen(path, "r");
+
+	if(pFile != NULL && pArrayEditoriales != NULL)
 	{
-		printf("LISTA DE EMPLEADOS\n");
-		if(libro_printList(pArrayListLibro)!=0)
+		if(!parser_EditorialesFromText(pFile, pArrayEditoriales))
 		{
-			printf("No hay libros para mostrar");
-			isOk=0;
+			isOk = 0;
 		}
 	}
-
+	fclose(pFile);
     return isOk;
 }
 
-int controller_mapDescuentos(LinkedList* pArrayListLibro){
+int controller_ListLibros(LinkedList* pArrayLibros, LinkedList* pArrayEditoriales)
+{
+int isOk = -1;
+int len;
+int i;
+eLibro* aux = NULL;
 
+	if(pArrayLibros!=NULL)
+	{
+		len = ll_len(pArrayLibros);
+
+		if(len>0)
+		{
+
+			//ll_sort(pArrayLibros,Libros_CompareById,1);
+
+			puts("|ID\t|\tTITULO|\tAUTOR\t|\tPRECIO|\tID.EDITORIAL|NOMBRE EDITORIAL \n");
+
+			for(i=0; i<len ;i++)
+			{
+				aux = (eLibro*) ll_get(pArrayLibros,i);
+
+				if(aux != NULL)
+				{
+					libro_printOneLibro(aux,pArrayEditoriales);
+					isOk=0;
+				}
+			}
+		}
+	}else{
+		printf("No hay libros para mostrar");
+	}
+
+return isOk;
+}
+
+int controller_sortLibros(LinkedList* pArrayLibros)
+{
 	int isOk = -1;
 
-	if(pArrayListLibro!=NULL)
-	{
-		pArrayListLibro=ll_map(pArrayListLibro,libro_descuentos); //librodescuentos va a ser mi funcion
-		printf("Se ha aplicado el descuento con exito");
-		isOk=0;
-	}
-	return isOk;
+		if(pArrayLibros != NULL)
+		{
+			ll_sort(pArrayLibros, libro_CompararAutor, 1);
+
+				isOk = 0;
+
+		}
+		return isOk;
 }
 
-
-
-int controller_filterEditorial(char* path, LinkedList* pArrayListLibros,LinkedList* pArrayListEditoriales)
+int Controller_Mapeado(char* path , LinkedList* pArrayList, LinkedList* pArrayListEditorial)
 {
 	int isOk;
-	LinkedList* listaMinotauro = NULL;
-	isOk = 1;
+	FILE* miArchivo;
+	LinkedList* nuevaLista;
 
-	if(pArrayListLibros != NULL)
+	isOk = -1;
+
+	if(path != NULL && pArrayList != NULL)
 	{
-		listaMinotauro = ll_filter(pArrayListLibros, libro_FiltrarMinotauro);
+		miArchivo = fopen(path, "w");
+		nuevaLista = ll_map(pArrayList, libros_Mapeado);
 
-		if(listaMinotauro != NULL)
+		if(miArchivo != NULL && nuevaLista != NULL)
 		{
-			isOk = 0;
-			controller_listLibro(listaMinotauro);
+			if(!Parser_SaveAsText(miArchivo, nuevaLista))
+			{
+				controller_ListLibros(nuevaLista, pArrayListEditorial);
+				isOk = 0;
+			}
+			else
+			{
+				printf("\nError parser");
+			}
+			fclose(miArchivo);
 		}
 	}
+
 	return isOk;
 }
 
 
+//******************************************************
 
 
 

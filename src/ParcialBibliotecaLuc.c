@@ -29,11 +29,16 @@ setbuf(stdout,NULL);
 
 LinkedList* listaLibros = ll_newLinkedList();
 LinkedList* listaEditoriales = ll_newLinkedList();
+//LinkedList* listaFiltro = ll_newLinkedList();
 int flagLibrosCargados = 0;
-//int flagEditorialesCargados = 0;
+int flagEditorialesCargados = 0;
 
 int opciones;
 char path[200];
+
+ll_clear(listaLibros);
+ll_clear(listaEditoriales);
+//ll_clear(listaFiltro);
 
 	do
 	{
@@ -44,102 +49,105 @@ char path[200];
 		case 1:
 			if(flagLibrosCargados == 0 || ll_isEmpty(listaLibros))
 			{
-				getStringPath(path,200,3,"Ingrese el nombre del archivo a cargar: (data_libros) \n","Error, intente nuevamente");
+				getStringPath(path,200,3,"Ingrese el nombre del archivo a cargar: (libros) \n","Error, intente nuevamente");
 
-				if(controller_loadFromText(path,listaLibros)==1)
+				if(!controller_loadFromText(path,listaLibros))
 				{
-					flagLibrosCargados = 1;
+					puts("Se cargo el archivo libros.csv");
+					flagLibrosCargados=1;
 				}
 				else
 				{
-					puts("No se encontro el nombre del archivo! data_libros \n");
+					puts("No se encontro el nombre del archivo! libros \n");
 				}
 			}else{
-
-				puts("Ya cargo un archivo");
-
+				puts("Ya cargo un archivo de libros");
 			}
 		break;
 		case 2:
-			if(!ll_isEmpty(listaLibros))
+			if(flagEditorialesCargados == 0 || ll_isEmpty(listaLibros))
 			{
-				getStringPath(path,200,3,"\nIngrese el nombre del archivo a cargar: ","Error, intente nuevamente");
+				getStringPath(path,200,3,"Ingrese el nombre del archivo a cargar: (editoriales) \n","Error, intente nuevamente");
 
-				if(!controller_loadFromText(path,listaEditoriales))
+				if(!controller_loadEditorialFromText(path, listaEditoriales))
 				{
-					puts("Se cargo con exito\n");
+					puts("Se cargo el archivo editoriales.csv");
+					flagEditorialesCargados=1;
 				}
 				else
 				{
-					puts("\nNo se encontro el nombre del archivo datalibros \n");
+					puts("No se encontro el nombre del archivo! libros \n");
 				}
 			}else{
-
-				puts("Ya cargo un archivo");
-
+				puts("Ya cargo un archivo de editoriales");
 			}
-			break;
 		break;
 		case 3:
-
-			//if(flagLibrosCargados == 1 && flagEditorialesCargados == 1)
 			if(!ll_isEmpty(listaLibros))
 			{
-				controller_sortLibro(listaLibros);
+				controller_ListLibros(listaLibros,listaEditoriales);
+
+				puts("\n*********************************************************************");
+				puts("*********************************************************************\n");
+
+				controller_sortLibros(listaLibros);
+				controller_ListLibros(listaLibros,listaEditoriales);
+
 			}
 			else
 			{
 				puts("\n Tiene que cargar la lista de libros e editoriales para poder ordenar algo\n");
 			}
-		break;
 
+		break;
 		case 4:
-			//MOSTRAR
-			//if(flagLibrosCargados == 1 && flagEditorialesCargados == 1)
 			if(!ll_isEmpty(listaLibros))
 			{
-				controller_listLibro(listaLibros);
+				controller_ListLibros(listaLibros,listaEditoriales);
 			}
 			else
 			{
-				puts("\n Tiene que cargar la lista de libros e editoriales para poder imprimir algo\n");
+				puts("\n Tiene que cargar los libros y las editoriales primero\n");
 			}
 		break;
-
 		case 5:
-
-			//if(flagLibrosCargados == 1 && flagEditorialesCargados == 1)
 			if(!ll_isEmpty(listaLibros))
 			{
-				controller_filterEditorial("ListaFiltradaMinotauro.csv", listaLibros,listaEditoriales);
-
-			}
-			else
-			{
-				puts("\n Tiene que cargar la lista de libros e editoriales para poder imprimir algo\n");
+				if(!Controller_FilterEditorial("librosFiltrados.csv", listaLibros, listaEditoriales))
+				{
+					puts("Se cargo con exito");
+				}
+				else
+				{
+					puts("\n Tiene que cargar los libros y las editoriales primero\n");
+				}
 			}
 		break;
-
 		case 6:
-			//if(flagLibrosCargados == 1 && flagEditorialesCargados == 1)
 			if(!ll_isEmpty(listaLibros))
 			{
-			controller_saveAsText("mapeado.csv",listaLibros);
-			}
-			else
-			{
-			puts("No hay nada para guardar");
+				if(Controller_Mapeado("mapeado.csv", listaLibros, listaLibros) == 1)
+				{
+						printf("ERROR");
+				}
+				else
+				{
+						printf("FUNCIONO");
+				}
 			}
 		break;
 		case 7:
-			puts("Salgo del programa");
+			puts("hasta luego");
 		break;
 		default:
-			puts("Error, salgo del programa");
+			puts("Error");
 		break;
 		}
 
 	}while(opciones != 7);
+
+    ll_deleteLinkedList(listaLibros);
+    ll_deleteLinkedList(listaEditoriales);
 
 	return EXIT_SUCCESS;
 }

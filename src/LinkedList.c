@@ -579,10 +579,47 @@ LinkedList* ll_clone(LinkedList* this)
  * \return int Retorna  (-1) Error: si el puntero a la listas es NULL
                                 ( 0) Si ok
  */
-
 int ll_sort(LinkedList* this, int (*pFunc)(void* ,void*), int order)
 {
-    int returnAux = -1;
+    int returnAux =-1;
+    int len;
+    int i;
+    int j;
+
+    void* element1;
+    void* element2;
+
+    if(this != NULL && pFunc!= NULL && (order ==0 || order==1))//order>=0 && order<=1)
+    {
+    	len= ll_len(this);
+    	for(i=0; i<len-1; i++)
+    	{
+    		for(j= i+1 ; j<len; j++)
+    		{
+    			element1 = ll_get(this, i);
+				element2 = ll_get(this, j);
+
+				if ((pFunc(element1, element2) > 0 && order)
+				 || (pFunc(element1, element2) < 0 && !order))
+				{
+					ll_set(this, i, element2);
+					ll_set(this, j, element1);
+				}
+    		}
+    	}
+    	returnAux=0;
+    }
+
+    return returnAux;
+}
+
+/*
+int ll_sort(LinkedList* this, int (*pFunc)(void* ,void*), int order)
+{
+
+
+
+	int returnAux = -1;
     int i;
     int j;
     int len;
@@ -603,7 +640,8 @@ int ll_sort(LinkedList* this, int (*pFunc)(void* ,void*), int order)
 
     			pElementB = ll_get(this,j);//elemento de mi segunda recorrida
 
-    			if((pFunc(pElementA,pElementB)>0 && order==1) || (pFunc(pElementA,pElementB)<0 && order==0))
+    			if((pFunc(pElementA,pElementB)>0 && order==1) ||
+    			(pFunc(pElementA,pElementB)<0 && order==0))
     				//si es p1 es mayor a p2, ascendente
     			{
     				 ll_set(this,i,pElementB);//pongo al menor
@@ -615,8 +653,9 @@ int ll_sort(LinkedList* this, int (*pFunc)(void* ,void*), int order)
     }
 
     return returnAux;
-}
 
+}
+*/
 
 /*
  *La función “ll_count” recibirá una lista y una función criterio “fn”. Se deberá iterar todos los elementos
@@ -662,29 +701,39 @@ agregará a la misma los ítems correspondientes y la devolverá.
  *
  */
 
-LinkedList* ll_filter(LinkedList* this, int (*fn)(void* element))
+LinkedList* ll_filter(LinkedList* this, int (*fn) (void*) )
 {
-	LinkedList* newLinkedList = ll_newLinkedList();
+	LinkedList* newLsFilter;
+	newLsFilter=NULL;
+	int len;
 
-	if(this != NULL && fn != NULL){
 
-		if(newLinkedList != NULL){
-			int i;
-			int len = ll_len(this);
-			void* pElement;
+	void* pAuxElem;
+	int criterio;
 
-			for(i=0;i<len;i++){
-				pElement = ll_get(this,i);
-				if(pElement != NULL){
-					if(fn(pElement) == 1){
-						ll_add(newLinkedList, pElement);
+	if(this != NULL && fn != NULL)
+	{
+		len= ll_len(this);
+		if(len>0)
+		{
+			newLsFilter= ll_newLinkedList();
+
+			for(int i= 0 ; i<len ; i++)
+			{
+				pAuxElem= ll_get(this,i);
+				if(pAuxElem != NULL)
+				{
+					criterio= fn(pAuxElem);
+					if(criterio==1)
+					{
+						ll_add(newLsFilter, pAuxElem);
 					}
 				}
 			}
+
 		}
 	}
-
-	return newLinkedList;
+	return newLsFilter;
 }
 
 
@@ -697,23 +746,31 @@ este modo se realizarán descuentos a los precios según se detalla:
 LinkedList* ll_map(LinkedList* this, void* (pFunc)(void*))
 {
     void* pElement;
-    LinkedList* map = NULL;
+    LinkedList* listaMapeada;
+    int i;
 
-    if(this != NULL && pFunc != NULL){
+    listaMapeada = NULL;
 
-    	for(int i=0;i< ll_len(this);i++){
+    if(this != NULL && *pFunc != NULL)
+    {
+    	listaMapeada = ll_newLinkedList();
 
-            pElement = ll_get(this, i);
-            pElement = pFunc(pElement);//le paso elementos a la funcion
+    	if(listaMapeada != NULL)
+    	{
+    		for (i = 0; i < ll_len(this); i++)
+    		{
+    			pElement = ll_get(this, i);
+    		    pElement = pFunc(pElement);
 
-            if(pElement != NULL){
-            	ll_add(map,pElement);
-            }
+    		    if(pElement!=NULL)
+    		    {
+    		        ll_add(listaMapeada, pElement);
+    		    }
+    		}
     	}
-
     }
 
-    return map;
+    return listaMapeada;
 }
 
 

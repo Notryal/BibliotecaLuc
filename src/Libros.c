@@ -31,14 +31,14 @@ eLibro* libro_new(void)
 	float precio;
 	int editorialId;
 
-	id=0;
-	precio=0;
-	editorialId=0;
+	id=1;
+	precio=1;
+	editorialId=1;
 
 	pLibro = (eLibro*) malloc(sizeof(eLibro));
 
-	strcpy(titulo,"\0");
-	strcpy(autor,"\0");
+	strcpy(titulo," ");
+	strcpy(autor," ");
 
 	if(pLibro!=NULL)
 	{
@@ -59,36 +59,22 @@ void libro_delete(eLibro* this)
 	}
 }
 
-int BuscarEditorialId(LinkedList* Editoriales,int id)
+int libro_CompararAutor(void* autorUno, void* autorDos)
 {
-	int index;
-	int i;
-	int auxIdEdit;
-	eEditorial* auxEditorial;
+	int comp;
 
-	index= -1;
+	eLibro* lib1;
+	eLibro* lib2;
 
-	if(Editoriales != NULL && ll_len(Editoriales)>0)
-	{
-		for(i=0 ; i<ll_len(Editoriales) ; i++)
-		{
-			auxEditorial= (eEditorial*)ll_get(Editoriales, i);
+	lib1 =(eLibro*) autorUno;
+	lib2 =(eLibro*) autorDos;
 
-			if(auxEditorial != NULL)
-			{
-				auxIdEdit= auxEditorial->idEditorial;
+	comp = strcmp(lib1->autor,lib2->autor);
 
-				if(auxEditorial!= NULL && auxIdEdit==id)
-				{
-					index = i;
-					break;
-				}
-			}
-		}
-	}
-
-	return index;
+	return comp;
 }
+
+
 
 //---------------------------------------------SETTERS---------------------------------------------
 int libro_setId(eLibro* this, int id)
@@ -171,28 +157,32 @@ int libro_getId(eLibro* this, int* id)
 }
 int libro_getTitulo(eLibro* this, char* titulo)
 {
-	int isOk = -1;
+	int retorno;
 
-	if(this!=NULL && titulo!=NULL)
+	retorno = -1;
+
+	if(this != NULL && titulo != NULL)
 	{
-		strcpy(titulo,this->titulo);
-		isOk=0;
+		strncpy(titulo, this->titulo, 128);
+		retorno = 0;
 	}
 
-	return isOk;
+	return retorno;
 }
 
 int libro_getAutor(eLibro* this, char* autor)
 {
-	int isOk = -1;
+	int retorno;
 
-	if(this!=NULL && autor!=NULL)
+	retorno = -1;
+
+	if(this != NULL && autor != NULL)
 	{
-		strcpy(autor,this->autor);
-		isOk=0;
+		strncpy(autor, this->autor, 128);
+		retorno = 0;
 	}
 
-	return isOk;
+	return retorno;
 }
 
 int libro_getPrecio(eLibro* this, float* precio)
@@ -222,6 +212,7 @@ int libro_getEditorialId(eLibro* this, int* editorialId)
 }
 
 //-----------------------------------------------------------
+
 int libro_setVerifyChar(eLibro* this, char* idStr, char* tituloStr, char* autorStr, char* precioStr, char* editorialIdStr)
 {
 	int isOk = -1;
@@ -278,161 +269,101 @@ int libro_getVerify(eLibro* this, int* id, char* titulo, char* autor, float* pre
 
 	return isOk;
 }
+//-----------------------------------------------------------
 
 
-int libro_printOneLibro(eLibro* this)
+
+
+
+
+void libro_printOneLibro(eLibro* pLibro,LinkedList* pEditorialesId)
 {
-	int isOk = -1;
 	int auxiliarID;
 	char auxiliarTitulo[128];
 	char auxiliarAutor[128];
 	float auxiliarPrecio;
-	int auxiliarEditorialId;
-	char editorial[128];
+	int auxiliarEditorialIdLibros;
+	int auxiliarEditorialIdEditoriales;
+	char auxNombreEditorial[128];
 
-	if(this!=NULL)
+	eEditorial* editorialAux;
+
+	//puts("rompe antes del for");
+
+	for(int i=0;i<ll_len(pEditorialesId);i++)
 	{
-		if(!libro_getVerify(this,&auxiliarID,auxiliarTitulo,auxiliarAutor,&auxiliarPrecio,&auxiliarEditorialId))
+		editorialAux = (eEditorial*)ll_get(pEditorialesId, i);
+
+		if(!libro_getVerify(pLibro,&auxiliarID,auxiliarTitulo,auxiliarAutor,&auxiliarPrecio,&auxiliarEditorialIdLibros)
+		 && !eEditorial_getId(editorialAux,&auxiliarEditorialIdEditoriales))
 		{
+			//puts("rompe en el primer if");
 
-			BuscarEditorialId();
-			BuscarEditorialId(auxiliarEditorialId,auxiliarEditorialId);
-
-
-			printf("| %2d |%-50s|%-16s|$%-7.2f|%2d|%-18s|\n",auxiliarID
-												 	 	 	 	 	  ,auxiliarTitulo
-																	  ,auxiliarAutor
-																	  ,auxiliarPrecio
-																	  ,auxiliarEditorialId
-																	  ,editorial);
-			isOk=0;
-		}
-		else
-		{
-			puts("Error para mostrar el libro");
-		}
-	}
-
-	return isOk;
-}
-
-int libro_printList(LinkedList* listaLibros)
-{
-	int isOk = -1;
-	int len;
-	int i;
-	eLibro* aux = NULL;
-
-	if(listaLibros!=NULL)
-	{
-		len = ll_len(listaLibros);
-
-		if(len>0)
-		{
-
-			puts("|ID\t|\tTITULO\t|\t\tAUTOR\t|\tPRECIO |\t\t ID.EDITORIAL \t|\tNOMBRE EDITORIAL \n");
-
-			for(i=0; i<len ;i++)
+			if(auxiliarEditorialIdEditoriales ==auxiliarEditorialIdLibros &&
+			!eEditorial_getName(editorialAux, auxNombreEditorial))
 			{
-				aux = (eLibro*) ll_get(listaLibros,i);
-
-				if(aux != NULL)
-				{
-					libro_printOneLibro(aux);
-					isOk=0;
-				}
-			}
-
-		}
-	}
-
-	return isOk;
-}
-
-
-int libro_FiltrarMinotauro(void* libro){
-	int isOk = -1;
-	int auxIdEditorial;
-	eLibro* unLibro;
-
-	if(libro != NULL)
-	{
-		unLibro = (eLibro*)libro;
-
-		if(libro_getEditorialId(unLibro, &auxIdEditorial) == 1)
-		{
-			if(auxIdEditorial == 4)
-			{
-				isOk = 1;
+				//puts("rompe en el segundo if");
+				printf("| %2d |%-16s|%-16s|$%-7.2f|%2d|%-18s|\n",auxiliarID
+																 	 	 	 	 	  ,auxiliarTitulo
+																					  ,auxiliarAutor
+																					  ,auxiliarPrecio
+																					  ,auxiliarEditorialIdLibros
+																					  ,auxNombreEditorial);
 			}
 		}
 	}
-	return isOk;
 }
 
-int libro_compareByAutor(void* libro1, void* libro2)
+void* libros_Mapeado(void* unLibro)
 {
-	int isOk = -1;
-	eLibro* lib1 = NULL;
-	eLibro* lib2 = NULL;
-	char nombre1[128];
-	char nombre2[128];
+	eLibro* auxiliarLibro;
+	eLibro* retorno;
+	int idEditorial;
+	float precioLibro;
+	float precioConDescuento;
+	float descuento;
 
-	if(libro1!=NULL && libro2!=NULL)
+	retorno = NULL;
+
+	if(unLibro != NULL)
 	{
-		lib1 = (eLibro*) libro1;
-		lib2 = (eLibro*) libro2;
+		auxiliarLibro = (eLibro*)unLibro;
 
-		if((!libro_getAutor(lib1,nombre1)) && (!libro_getAutor(lib2,nombre2)))
+		if(!libro_getEditorialId(auxiliarLibro, &idEditorial))
 		{
-			isOk = strcmp(nombre1,nombre2);
-		}
-	}
-
-	return isOk;
-}
-
-void* libro_descuentos(void* libros)
-{
-	eLibro* pElement = NULL;
-	int auxId;
-	float auxPrecio;
-	float newPrecio=0;
-	char auxNombre[128];
-
-	if(libros!=NULL)
-	{
-		pElement= (eLibro*) libros;
-		if(!libro_getEditorialId(pElement,&auxId))
-		{
-			BuscarNombreEditorial(auxId,auxNombre);
-
-			if(stricmp(auxNombre,"Planeta")==0)
+			if(idEditorial == 1 && !libro_getPrecio(auxiliarLibro, &precioLibro))
 			{
-				libro_getPrecio(pElement,&auxPrecio);
-				if(auxPrecio>=300)
+				if(precioLibro >= 300)
 				{
-					newPrecio=auxPrecio-(auxPrecio*20/100);
-					libro_setPrecio(pElement,newPrecio);
+					descuento = (precioLibro * 20) / 100;
+					precioConDescuento = precioLibro - descuento;
+
+					if(!libro_setPrecio(auxiliarLibro, precioConDescuento))
+					{
+						retorno = auxiliarLibro;
+					}
 				}
 			}
 			else
 			{
-				if(stricmp(auxNombre,"SIGLO XXI EDITORES")==0)
+				if(idEditorial == 2 && !libro_getPrecio(auxiliarLibro, &precioLibro))
 				{
-					libro_getPrecio(pElement,&auxPrecio);
-					if(auxPrecio<=200)
+					if(precioLibro <= 200)
 					{
-						newPrecio=auxPrecio-(auxPrecio*10/100);
-						libro_setPrecio(pElement,newPrecio);
+						descuento = (precioLibro * 10) / 100;
+						precioConDescuento = precioLibro - descuento;
+
+						if(libro_setPrecio(auxiliarLibro, precioConDescuento))
+						{
+							retorno = auxiliarLibro;
+						}
 					}
 				}
 			}
 		}
 	}
 
-	return pElement;
+	return retorno;
 }
-
 
 

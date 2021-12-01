@@ -1,17 +1,23 @@
-/*
- * Controller.h
- *
- *  Created on: 25 nov. 2021
- *      Author: Usuario
- */
-
 #ifndef CONTROLLER_H_
 #define CONTROLLER_H_
 
-int controller_loadFromText(char* path , LinkedList* pArrayListLibro);
-int controller_listLibro(LinkedList* pArrayListLibro);
-int controller_sortLibro(LinkedList* pArrayListLibro);
-int controller_saveAsText(char* path , LinkedList* pArrayListLibro);
-int controller_filterEditorial(char* path, LinkedList* pArrayListLibros,LinkedList* pArrayListEditoriales);
+#include "LinkedList.h"
+#include "Libros.h"
+#include "Editoriales.h"
+#include "parser.h"
+#include "menus.h"
 
+
+int controller_sortLibros(LinkedList* pArrayLibros);
+int controller_ListLibros(LinkedList* pArrayLibros, LinkedList* pArrayEditoriales);
+
+int controller_loadEditorialFromText(char* path , LinkedList* pArrayEditoriales);
+
+int controller_loadFromText(char* path , LinkedList* pArrayLibros);
+
+int librosFiltrarMinotauro(void* unLibro);
+
+int Controller_FilterEditorial(char* path , LinkedList* pArrayList, LinkedList* pArrayListEditorial);
+
+int Controller_Mapeado(char* path , LinkedList* pArrayList, LinkedList* pArrayListEditorial);
 #endif /* CONTROLLER_H_ */

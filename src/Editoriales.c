@@ -58,7 +58,7 @@ int eEditorial_setId(eEditorial* this, int id)
 	if(this != NULL && id > 0)
 	{
 		this->idEditorial = id;
-		retorno = 1;
+		retorno = 0;
 	}
 	return retorno;
 }
@@ -70,7 +70,7 @@ int eEditorial_getId(eEditorial* this, int* id)
 	if(this != NULL && id != NULL)
 	{
 		*id = this->idEditorial;
-		retorno = 1;
+		retorno = 0;
 	}
 	return retorno;
 }
@@ -82,10 +82,11 @@ int eEditorial_setName(eEditorial* this, char* nombre)
 	if(this != NULL && nombre != NULL)
 	{
 		strcpy(this->nombre, nombre);
-		retorno = 1;
+		retorno = 0;
 	}
 	return retorno;
 }
+
 
 int eEditorial_getName(eEditorial* this, char* nombre)
 {
@@ -94,7 +95,20 @@ int eEditorial_getName(eEditorial* this, char* nombre)
 	if(this != NULL && nombre != NULL)
 	{
 		strcpy(nombre, this->nombre);
-		retorno = 1;
+		retorno = 0;
 	}
 	return retorno;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

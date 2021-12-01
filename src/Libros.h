@@ -2,6 +2,7 @@
 #define LIBROS_H_
 
 #include "LinkedList.h"
+#include "Editoriales.h"
 
 typedef struct
 {
@@ -35,22 +36,6 @@ eLibro* libro_newParametros(char* idStr, char* tituloStr, char* autorStr, char* 
  * @param this puntero al elemento
  */
 void libro_delete(eLibro* this);
-/**
- * @brief Busca el id de la editorial con ese nombre
- *
- * @param nombre
- * @param id
- * @return 0 si esta todo bien, -1 si esta todo mal
- */
-int BuscarIdEditorial(char* nombre, int* id);
-/**
- * @brief Busca el nombre de la editorial con el id
- *
- * @param id
- * @param nombre
- * @return 0 si esta todo bien, -1 si esta todo mal
- */
-int BuscarEditorialId(LinkedList* Editoriales,int id);
 
 //SETTERS
 /**
@@ -175,20 +160,14 @@ int libro_setVerifyInt(eLibro* this, int id, char* titulo, char* autor, float pr
 int libro_getVerify(eLibro* this, int* id, char* titulo, char* autor, float* precio, int* editorialId);
 
 //
-/**
- * @brief Muestra un libro
- *
- * @param this
- * @return 0 si esta todo bien, -1 si esta todo mal
- */
-int libro_printOneLibro(eLibro* this);
+
 /**
  * @brief Muestra la lista de libros
  *
  * @param listaLibros
  * @return  0 si esta todo bien, -1 si esta todo mal
  */
-int libro_printList(LinkedList* listaLibros);
+void libro_printOneLibro(eLibro* pLibro,LinkedList* lsEditoriales);
 
 /**
  * @brief Compara los nombres de los autores buscando ordenar de mayor a menor
@@ -197,11 +176,14 @@ int libro_printList(LinkedList* listaLibros);
  * @param libro2
  * @return -1 si es menor, 0 si son iguales, 1 si es mayor
  */
-int libro_compareByAutor(void* libro1, void* libro2);
-int libro_FiltrarMinotauro(void* libro);
-void* libro_descuentos(void* libros);
+int libro_CompararAutor(void* autorUno, void* autorDos);
 
-
-
-
+/**
+ * @brief Compara los nombres de los autores buscando ordenar de mayor a menor
+ *
+ * @param libro1
+ * @param libro2
+ * @return -1 si es menor, 0 si son iguales, 1 si es mayor
+ */
+void* libros_Mapeado(void* unLibro);
 #endif /* LIBROS_H_ */
